@@ -1,14 +1,26 @@
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, Image, FlatList, ViewToken } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '@/constants';
-import { Movie, getTrendingMovies } from '@/lib/getTrendingMovies';
-
+import { Api, Movie } from '@/utils/Api';
+import Trending from '@/components/Trending';
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[] | null>(null);
+  const [activeItem, setActiveItem] = useState<number>();
+
+  const viewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    if (viewableItems.length > 0) {
+      setActiveItem(Number(viewableItems[0].key));
+      console.log(viewableItems);
+    }
+  };
 
   useEffect(() => {
-    getTrendingMovies().then((data) => {
+    Api.getTrendingMovies().then((data) => {
       setTrendingMovies(data.results.slice(0, 5));
     });
   }, []);
@@ -27,24 +39,7 @@ const Home = () => {
           TRENDING
         </Text>
       </View>
-      <FlatList
-        className='w-96 self-center'
-        data={trendingMovies}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View className='h-72 w-40 items-center'>
-            <Image source={{ uri: item.image }} className='w-36 h-48 mb-2' />
-            <Text className='text-white font-psemibold text-base text-center'>
-              {item.title} - {item.releaseDate}
-            </Text>
-            <Text className='text-white font-psemibold'>{item.type}</Text>
-          </View>
-        )}
-        ListEmptyComponent={() => {
-          return <Text className='text-white'> EMPTY </Text>;
-        }}
-        horizontal
-      />
+      <Trending trendingMovies={trendingMovies} />
     </SafeAreaView>
   );
 };

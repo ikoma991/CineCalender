@@ -1,4 +1,4 @@
-export interface TrendingMoviesProps {
+export interface MovieProps {
   currentPage: number;
   hasNextPage: boolean;
   results: Movie[];
@@ -19,13 +19,14 @@ export enum MovieType {
   Movie = 'Movie',
   TVSeries = 'TV Series',
 }
-export const getTrendingMovies = async (
-  type = '',
-  page = 1
-): Promise<TrendingMoviesProps> => {
-  const res = await fetch(
-    `${process.env.EXPO_PUBLIC_API_URL}/trending?type=${type}&page=${page}`
-  );
-  const data = res.json();
-  return data;
-};
+export class Api {
+  static baseUrl = process.env.EXPO_PUBLIC_API_URL;
+
+  static async getTrendingMovies(type = '', page = ''): Promise<MovieProps> {
+    const res = await fetch(
+      `${this.baseUrl}/trending?type=${type}&page=${page}`
+    );
+    const data = res.json();
+    return data;
+  }
+}
