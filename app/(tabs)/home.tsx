@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, ViewToken } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '@/constants';
@@ -6,18 +6,6 @@ import { Api, Movie } from '@/utils/Api';
 import Trending from '@/components/Trending';
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[] | null>(null);
-  const [activeItem, setActiveItem] = useState<number>();
-
-  const viewableItemsChanged = ({
-    viewableItems,
-  }: {
-    viewableItems: ViewToken[];
-  }) => {
-    if (viewableItems.length > 0) {
-      setActiveItem(Number(viewableItems[0].key));
-      console.log(viewableItems);
-    }
-  };
 
   useEffect(() => {
     Api.getTrendingMovies().then((data) => {

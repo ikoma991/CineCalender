@@ -1,8 +1,16 @@
-import { View, Text, Image, FlatList, ViewToken, Animated } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ViewToken,
+  ActivityIndicator,
+} from 'react-native';
+import React, { useState } from 'react';
 import { Movie } from '@/utils/Api';
 import * as Animatable from 'react-native-animatable';
 import { CustomAnimation } from 'react-native-animatable';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const zoomIn: CustomAnimation = {
   from: {
@@ -41,11 +49,20 @@ const TrendingItem: React.FC<TrendingItemProps> = ({ item, activeItem }) => {
       animation={activeItem === item.id ? zoomIn : zoomOut}
       duration={500}
     >
-      <Image source={{ uri: item.image }} className='w-36 h-48 mb-2' />
+      <Image
+        source={{ uri: item.image }}
+        className='w-36 h-48 mb-2 rounded-lg'
+      />
       <Text className='text-white font-psemibold text-base text-center'>
         {item.title} - {item.releaseDate}
       </Text>
-      <Text className='text-white font-psemibold'>{item.type}</Text>
+      <Text className='text-white font-psemibold text-center'>{item.type}</Text>
+      <View className='flex flex-row items-center justify-center gap-1'>
+        <MaterialIcons name='star' size={24} color={'#FF9C01'} />
+        <Text className='text-white text-base'>
+          {item.rating.toFixed(1)}/10
+        </Text>
+      </View>
     </Animatable.View>
   );
 };
@@ -61,17 +78,24 @@ const Trending: React.FC<TrendingProps> = ({ trendingMovies }) => {
       setActiveItem(Number(viewableItems[0].key));
     }
   };
+
+  if (trendingMovies?.length === 0) {
+    return (
+      <ActivityIndicator color={'#FF9C01'} size={'large'} className='mt-8' />
+    );
+  }
   return (
     <FlatList
       className='w-96 self-center'
       data={trendingMovies}
       horizontal
+      scrollEventThrottle={16}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <TrendingItem item={item} activeItem={activeItem} />
       )}
       ListEmptyComponent={() => {
-        return <Text className='text-white'> EMPTY </Text>;
+        return <Text className='text-white'> No Movies Found </Text>;
       }}
       onViewableItemsChanged={viewableItemsChanged}
       viewabilityConfig={{
