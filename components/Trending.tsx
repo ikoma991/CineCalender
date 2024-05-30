@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
-import { Movie } from '@/utils/Api';
 import * as Animatable from 'react-native-animatable';
 import { CustomAnimation } from 'react-native-animatable';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Movie } from '@/utils/Api';
 
 const zoomIn: CustomAnimation = {
   from: {

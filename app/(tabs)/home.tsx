@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '@/constants';
@@ -15,10 +15,10 @@ const Home = () => {
 
   return (
     <SafeAreaView className='bg-primary h-full'>
-      <View className='flex flex-row pt-5'>
+      <View className='flex flex-row pt-5 pb-2'>
         <Image
           source={images.logo}
-          className='w-40 h-10'
+          className='w-40 h-10 ml-2'
           resizeMode='contain'
         />
       </View>
