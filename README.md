@@ -10,4 +10,4 @@ Complete homepage
 
 Create movie info page
 
-Create bookmark page (save movies)
+Create bookmarks page (save movies) ( Locally? JSON?  or DB ? )
